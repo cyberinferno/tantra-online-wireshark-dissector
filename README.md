@@ -8,3 +8,4 @@ Most Kathana 5 packet type opcodes have been defined by referring to the leaked 
 
 * Update tantra server ports at the end of the `tantra-dissector.lua` file if needed.
 * Copy `tantra-dissector.lua` to Wireshark plugin directory (To locate plugin folder refer [this link](https://www.wireshark.org/docs/wsug_html_chunked/ChPluginFolders.html) ).
+* If Wireshark is already running then open `Analyze` option dropdown and click on `Reload Lua Plugins` to load the plugin.
