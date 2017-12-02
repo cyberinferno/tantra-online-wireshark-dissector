@@ -354,8 +354,11 @@ function tantra.dissector(buffer, pinfo, tree)
 
     local offset = 0
 
+    -- First 2 bytes are always opcodes hence read it
     local opcode = buffer(offset, 2):le_uint()
 
+    -- 0x1F44F321 is the hardcoded initialize code sent from client to server
+    -- Hence ignore it if found at the starting of any packet
     if (opcode == 0x1F44) then
         offset = offset + 4;
     elseif (opcode == 0xF321) then
@@ -364,6 +367,8 @@ function tantra.dissector(buffer, pinfo, tree)
 
     opcode = buffer(offset, 2):le_uint()
 
+    -- If opcode is defined in our array display the value
+    -- Else display it as unknown packet type
     if (opcodes[opcode] ~= nil) then
         subTree:add_le(f.opcode, buffer(offset, 2))
     else
@@ -371,7 +376,10 @@ function tantra.dissector(buffer, pinfo, tree)
     end
 end
 
+-- We read only from TCP streams
 tcp_table = DissectorTable.get("tcp.port")
+
+-- Game server ports to be listened
 tcp_table:add(1000, tantra)
 tcp_table:add(3001, tantra)
 tcp_table:add(3002, tantra)
